@@ -42,6 +42,21 @@ export class AuthService {
     return token;
   }
 
+  verifyToken(token: string) {
+    const jwtConfig = this.config.get(Config.Jwt, { infer: true });
+
+    try {
+      const payload = jwt.verify(
+        token,
+        jwtConfig.secret,
+      ) as unknown as JwtPayload;
+
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException('Not authorized!');
+    }
+  }
+
   async register(data: RegisterDto) {
     const existingPerson = await this.person.findOne({
       where: { email: data.email },
@@ -83,5 +98,13 @@ export class AuthService {
     const token = this.generateJwt({ sub: user.id });
     // return token
     return { token };
+  }
+
+  async getProfile(id: number) {
+    const profile = await this.person.findByPk(id, {
+      attributes: ['first_name', 'last_name', 'email'],
+    });
+
+    return profile;
   }
 }
