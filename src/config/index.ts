@@ -10,12 +10,16 @@ export interface IConfig {
     password: string;
     name: string;
   };
+  jwt: {
+    secret: string;
+  };
 }
 
 export enum Config {
   Port = 'port',
   NodeEnv = 'nodeEnv',
   Database = 'database',
+  Jwt = 'jwt',
 }
 
 const config = (): IConfig => ({
@@ -27,6 +31,9 @@ const config = (): IConfig => ({
     name: process.env.DB_NAME,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
   },
 });
 
