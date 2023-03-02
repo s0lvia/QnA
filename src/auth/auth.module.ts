@@ -8,5 +8,6 @@ import { Person } from './person.model';
   imports: [SequelizeModule.forFeature([Person])],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
