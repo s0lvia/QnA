@@ -32,4 +32,18 @@ export class QuestionService {
 
     return qandAuthor;
   }
+
+  async fetchAll() {
+    const questions = await this.questionModel.findAll({
+      attributes: ['id', 'title', 'body'],
+      include: [
+        {
+          model: Person,
+          attributes: ['id', 'first_name', 'last_name'],
+        },
+      ],
+    });
+
+    return questions;
+  }
 }

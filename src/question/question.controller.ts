@@ -1,5 +1,5 @@
 import { SuccessResponseObject } from '@akhilome/common';
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { JoiSchema } from 'src/common/joi.pipe';
 import { CreateQuestionDto, createQuestionSchema } from './question.dto';
@@ -19,5 +19,12 @@ export class QuestionController {
     const data = await this.questionService.create(personId, body);
 
     return new SuccessResponseObject('Question created', data);
+  }
+
+  @Get('/')
+  async fetchAllQuestions() {
+    const data = await this.questionService.fetchAll();
+
+    return new SuccessResponseObject('Questions retrieved', data);
   }
 }
