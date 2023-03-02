@@ -1,6 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { RegisterDto } from './auth.dto';
+import { LoginDto, RegisterDto } from './auth.dto';
 import { Person } from './person.model';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -18,8 +23,14 @@ export class AuthService {
     private readonly config: ConfigService<IConfig>,
   ) {}
 
+  private logger = new Logger(AuthService.name);
+
   private hash(password: string): string {
     return bcrypt.hashSync(password);
+  }
+
+  private compare(password: string, hash: string): boolean {
+    return bcrypt.compareSync(password, hash);
   }
 
   private generateJwt(data: JwtPayload) {
@@ -49,6 +60,28 @@ export class AuthService {
 
     const token = this.generateJwt({ sub: person.id });
 
+    return { token };
+  }
+
+  async login(data: LoginDto) {
+    // check db for email
+    const user = await this.person.findOne({
+      where: { email: data.email },
+    });
+
+    if (!user) {
+      this.logger.debug(`email not found for ${data.email}`);
+      throw new UnauthorizedException('Unable to log in');
+    }
+    // compare hashed password
+    const passwordMatch = this.compare(data.password, user.hash);
+
+    if (!passwordMatch) {
+      throw new UnauthorizedException('Password mismatch');
+    }
+    // generate jwt
+    const token = this.generateJwt({ sub: user.id });
+    // return token
     return { token };
   }
 }

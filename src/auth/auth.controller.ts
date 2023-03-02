@@ -1,7 +1,7 @@
 import { SuccessResponseObject } from '@akhilome/common';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { JoiSchema } from 'src/common/joi.pipe';
-import { RegisterDto, registerSchema } from './auth.dto';
+import { LoginDto, loginSchema, RegisterDto, registerSchema } from './auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -13,5 +13,12 @@ export class AuthController {
     const data = await this.authService.register(body);
 
     return new SuccessResponseObject('registration successful', data);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('/login')
+  async handleLogin(@Body(JoiSchema(loginSchema)) body: LoginDto) {
+    const data = await this.authService.login(body);
+    return new SuccessResponseObject('Login successful', data);
   }
 }

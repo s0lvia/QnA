@@ -13,3 +13,13 @@ export const registerSchema = Joi.object<RegisterDto>({
   last_name: Joi.string().required(),
   password: Joi.string().min(8).required(),
 });
+
+export class LoginDto {
+  email: string;
+  password: string;
+}
+
+export const loginSchema = Joi.object<LoginDto>({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
