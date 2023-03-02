@@ -3,10 +3,12 @@ import {
   AutoIncrement,
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { Question } from 'src/question/question.model';
 
 interface PersonAttributes {
   id: number;
@@ -54,4 +56,7 @@ export class Person extends Model<
     allowNull: false,
   })
   hash: string;
+
+  @HasMany(() => Question)
+  questions: Question[];
 }

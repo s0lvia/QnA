@@ -6,12 +6,14 @@ import { AppService } from './app.service';
 import { configModuleOptions } from './config';
 import { sequelizeConfigOpts } from './config/sequelize.config';
 import { AuthModule } from './auth/auth.module';
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(configModuleOptions),
     SequelizeModule.forRootAsync(sequelizeConfigOpts),
     AuthModule,
+    QuestionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
