@@ -10,7 +10,7 @@ export class QuestionService {
     @InjectModel(Question) private readonly questionModel: typeof Question,
   ) {}
 
-  private fetchQuestionAndAuthor(questionId: number) {
+  fetchQuestionAndAuthor(questionId: number) {
     return this.questionModel.findByPk(questionId, {
       attributes: ['id', 'title', 'body'],
       include: [
