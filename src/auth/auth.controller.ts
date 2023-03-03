@@ -22,7 +22,7 @@ export class AuthController {
   async handleRegister(@Body(JoiSchema(registerSchema)) body: RegisterDto) {
     const data = await this.authService.register(body);
 
-    return new SuccessResponseObject('registration successful', data);
+    return new SuccessResponseObject('Registration successful', data);
   }
 
   @HttpCode(HttpStatus.OK)
