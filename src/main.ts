@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService<IConfig>);
   const port = config.get(Config.Port);
-
+  app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   await app.listen(port);
