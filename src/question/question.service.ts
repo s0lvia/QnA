@@ -33,6 +33,16 @@ export class QuestionService {
     return qandAuthor;
   }
 
+  async update(id: number, data: Partial<CreateQuestionDto>, personId: number) {
+    await this.questionModel.update(
+      { ...data },
+      { where: { id: id, person_id: personId }, returning: true },
+    );
+
+    const qandAuthor = await this.fetchQuestionAndAuthor(id);
+    return qandAuthor;
+  }
+
   async fetchAll() {
     const questions = await this.questionModel.findAll({
       attributes: ['id', 'title', 'body'],
@@ -45,5 +55,14 @@ export class QuestionService {
     });
 
     return questions;
+  }
+
+  async deleteQuestion(id: number, personId: number) {
+    await this.questionModel.destroy({
+      where: {
+        id: id,
+        person_id: personId,
+      },
+    });
   }
 }
