@@ -40,6 +40,25 @@ export class Answer extends Model<
   })
   body: string;
 
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: true,
+  })
+  upvote: number;
+
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: true,
+  })
+  downvote: number;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: 0,
+  })
+  isAccepted: boolean;
+
   @ForeignKey(() => Person)
   @Column
   person_id: number;
