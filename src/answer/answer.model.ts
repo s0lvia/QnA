@@ -2,7 +2,6 @@ import { Optional } from 'sequelize';
 import {
   AutoIncrement,
   BelongsTo,
-  HasMany,
   Column,
   DataType,
   ForeignKey,
@@ -10,35 +9,30 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Answer } from 'src/answer/answer.model';
 import { Person } from 'src/auth/person.model';
+import { Question } from 'src/question/question.model';
 
-interface QuestionAttributes {
+interface AnswerAttributes {
   id: number;
-  title: string;
   body: string;
   person_id: number;
+  question_id: number;
 }
 
 @Table({
-  tableName: 'question',
+  tableName: 'answer',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
+  deletedAt: 'deleted_at',
 })
-export class Question extends Model<
-  QuestionAttributes,
-  Optional<QuestionAttributes, 'id'>
+export class Answer extends Model<
+  AnswerAttributes,
+  Optional<AnswerAttributes, 'id'>
 > {
   @AutoIncrement
   @PrimaryKey
   @Column
   id?: number;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  title: string;
 
   @Column({
     type: DataType.TEXT,
@@ -50,9 +44,10 @@ export class Question extends Model<
   @Column
   person_id: number;
 
+  @ForeignKey(() => Question)
+  @Column
+  question_id: number;
+
   @BelongsTo(() => Person)
   author: Person;
-
-  @HasMany(() => Answer)
-  answers: Answer[];
 }
