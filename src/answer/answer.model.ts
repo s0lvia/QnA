@@ -23,6 +23,7 @@ interface AnswerAttributes {
   tableName: 'answer',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
+  deletedAt: 'deleted_at',
 })
 export class Answer extends Model<
   AnswerAttributes,
