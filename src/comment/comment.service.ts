@@ -10,7 +10,7 @@ export class CommentService {
     @InjectModel(Comment) private readonly commentModel: typeof Comment,
   ) {}
 
-  fetchAnswerQuestionandAuthor(commentId: number) {
+  fetchCommentandAuthor(commentId: number) {
     return this.commentModel.findByPk(commentId, {
       attributes: ['id', 'entity', 'entity_id', 'body'],
       include: [
@@ -34,8 +34,28 @@ export class CommentService {
     }
 
     created.save();
-    const candAuthor = await this.fetchAnswerQuestionandAuthor(created.id);
+    const candAuthor = await this.fetchCommentandAuthor(created.id);
 
     return candAuthor;
+  }
+
+  async update(id: number, data: Partial<CreateCommentDto>, personId: number) {
+    await this.commentModel.update(
+      { ...data },
+      { where: { id: id, person_id: personId }, returning: true },
+    );
+
+    const candAuthor = await this.fetchCommentandAuthor(id);
+
+    return candAuthor;
+  }
+
+  async deleteComment(id: number, personId: number) {
+    await this.commentModel.destroy({
+      where: {
+        id: id,
+        person_id: personId,
+      },
+    });
   }
 }

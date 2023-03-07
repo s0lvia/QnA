@@ -11,6 +11,6 @@ export const createCommentSchema = Joi.object<CreateCommentDto>({
   entity_id: Joi.number().required(),
 });
 
-export const updateAnswerSchema = Joi.object<CreateCommentDto>({
+export const updateCommentSchema = Joi.object<CreateCommentDto>({
   body: Joi.string().min(10),
 });
