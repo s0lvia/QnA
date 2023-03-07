@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Question } from 'src/question/question.model';
 import { Person } from 'src/auth/person.model';
-import { Answer } from 'src/answer/answer.model';
 import { Comment } from './comment.model';
 import { CreateCommentDto } from './comment.dto';
 
@@ -20,14 +18,6 @@ export class CommentService {
           model: Person,
           attributes: ['id', 'first_name', 'last_name'],
         },
-        {
-          model: Question,
-          attributes: ['id', 'body'],
-        },
-        {
-          model: Answer,
-          attributes: ['id', 'body'],
-        },
       ],
     });
   }
@@ -37,9 +27,15 @@ export class CommentService {
       ...data,
       person_id: personId,
     });
+    if (data.entity == 'answer') {
+      created.answer_id = data.entity_id;
+    } else if (data.entity == 'question') {
+      created.question_id = data.entity_id;
+    }
 
-    const qandAuthor = await this.fetchAnswerQuestionandAuthor(created.id);
+    created.save();
+    const candAuthor = await this.fetchAnswerQuestionandAuthor(created.id);
 
-    return qandAuthor;
+    return candAuthor;
   }
 }

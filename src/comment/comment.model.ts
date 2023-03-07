@@ -18,13 +18,14 @@ interface CommentAttributes {
   entity_id: number;
   entity: string;
   body: string;
+  person_id: number;
 }
 
 @Table({
-  tableName: 'answer',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  deletedAt: 'deleted_at',
+  tableName: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
 })
 export class Comment extends Model<
   CommentAttributes,
@@ -42,10 +43,17 @@ export class Comment extends Model<
   body: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.ENUM('none', 'answer', 'question'),
     allowNull: false,
+    defaultValue: 'none',
   })
   entity: string;
+
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: false,
+  })
+  entity_id: number;
 
   @ForeignKey(() => Person)
   @Column
@@ -61,4 +69,10 @@ export class Comment extends Model<
 
   @BelongsTo(() => Person)
   author: Person;
+
+  @BelongsTo(() => Question)
+  question: Question;
+
+  @BelongsTo(() => Answer)
+  answer: Answer;
 }

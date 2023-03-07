@@ -1,14 +1,14 @@
 import Joi from 'joi';
 export class CreateCommentDto {
-  entity_id: number;
   body: string;
   entity: string;
+  entity_id: number;
 }
 
 export const createCommentSchema = Joi.object<CreateCommentDto>({
-  entity_id: Joi.number().required(),
   body: Joi.string().required().min(10),
   entity: Joi.string().required(),
+  entity_id: Joi.number().required(),
 });
 
 export const updateAnswerSchema = Joi.object<CreateCommentDto>({
