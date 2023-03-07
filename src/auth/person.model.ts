@@ -10,6 +10,7 @@ import {
 } from 'sequelize-typescript';
 import { Answer } from 'src/answer/answer.model';
 import { Question } from 'src/question/question.model';
+import { Comment } from 'src/comment/comment.model';
 
 interface PersonAttributes {
   id: number;
@@ -63,4 +64,7 @@ export class Person extends Model<
 
   @HasMany(() => Answer)
   answers: Answer[];
+
+  @HasMany(() => Comment)
+  comments: Comment[];
 }

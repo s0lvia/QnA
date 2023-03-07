@@ -2,6 +2,7 @@ import { Optional } from 'sequelize';
 import {
   AutoIncrement,
   BelongsTo,
+  HasMany,
   Column,
   DataType,
   ForeignKey,
@@ -11,6 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { Person } from 'src/auth/person.model';
 import { Question } from 'src/question/question.model';
+import { Comment } from 'src/comment/comment.model';
 
 interface AnswerAttributes {
   id: number;
@@ -50,4 +52,7 @@ export class Answer extends Model<
 
   @BelongsTo(() => Person)
   author: Person;
+
+  @HasMany(() => Comment)
+  comments: Comment[];
 }
