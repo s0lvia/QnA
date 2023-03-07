@@ -17,7 +17,7 @@ const getOpts = (c: ConfigService<IConfig>): SequelizeModuleOptions => {
     username: db.username,
     password: db.password,
     database: db.name,
-    synchronize: false,
+    synchronize: true,
     autoLoadModels: true,
     logging: (sql) => logger.verbose(sql),
   };

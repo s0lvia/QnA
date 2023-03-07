@@ -7,10 +7,11 @@ import { QuestionModule } from 'src/question/question.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { Question } from 'src/question/question.model';
 import { QuestionService } from 'src/question/question.service';
+import { AnswerMeta } from './answer-meta.model';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Answer, Question]),
+    SequelizeModule.forFeature([Answer, Question, AnswerMeta]),
     QuestionModule,
     AuthModule,
   ],

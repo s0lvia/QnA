@@ -2,7 +2,6 @@ import { Optional } from 'sequelize';
 import {
   AutoIncrement,
   BelongsTo,
-  HasMany,
   Column,
   DataType,
   ForeignKey,
@@ -17,13 +16,14 @@ interface AnswerMetaAttributes {
   id: number;
   person_id: number;
   answer_id: number;
+  status: string;
 }
 
 @Table({
   tableName: 'answer-meta',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  deletedAt: 'deleted_at',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
 })
 export class AnswerMeta extends Model<
   AnswerMetaAttributes,
@@ -33,6 +33,13 @@ export class AnswerMeta extends Model<
   @PrimaryKey
   @Column
   id?: number;
+
+  @Column({
+    type: DataType.ENUM('none', 'upvote', 'downvote'),
+    allowNull: false,
+    defaultValue: 'none',
+  })
+  status: string;
 
   @ForeignKey(() => Person)
   @Column

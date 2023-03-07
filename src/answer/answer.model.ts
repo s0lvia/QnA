@@ -76,5 +76,5 @@ export class Answer extends Model<
   comments: Comment[];
 
   @HasMany(() => AnswerMeta)
-  answerMeta: AnswerMeta[];
+  answerMeta: AnswerMeta;
 }

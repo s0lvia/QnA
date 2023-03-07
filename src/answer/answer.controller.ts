@@ -112,23 +112,13 @@ export class AnswerController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('/:id/upvote')
   async handleUpVote(@Param('id') id: string, @Req() req) {
-    const answer = await this.answerService.fetchAnswerAndAuthor(+id);
-
-    if (!answer) {
-      throw new NotFoundException('Answer does not exist');
-    }
-    await this.answerService.upvoteAnswer(+id);
+    await this.answerService.upvoteAnswer(+id, req.user.id);
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Post('/:id/upvote')
+  @Post('/:id/downvote')
   async handleDownVote(@Param('id') id: string, @Req() req) {
-    const answer = await this.answerService.fetchAnswerAndAuthor(+id);
-
-    if (!answer) {
-      throw new NotFoundException('Answer does not exist');
-    }
-    await this.answerService.upvoteAnswer(+id);
+    await this.answerService.downvoteAnswer(+id, req.user.id);
   }
 }
