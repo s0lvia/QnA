@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Answer } from './answer.model';
 import { CreateAnswerDto } from './answer.dto';
 import { Person } from 'src/auth/person.model';
+import { Comment } from 'src/comment/comment.model';
 
 @Injectable()
 export class AnswerService {
@@ -17,6 +18,10 @@ export class AnswerService {
         {
           model: Person,
           attributes: ['id', 'first_name', 'last_name'],
+        },
+        {
+          model: Comment,
+          attributes: ['id', 'entity', 'entity_id', 'body'],
         },
       ],
     });

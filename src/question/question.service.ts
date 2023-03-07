@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Person } from 'src/auth/person.model';
+import { Comment } from 'src/comment/comment.model';
 import { CreateQuestionDto } from './question.dto';
 import { Question } from './question.model';
 
@@ -50,6 +51,10 @@ export class QuestionService {
         {
           model: Person,
           attributes: ['id', 'first_name', 'last_name'],
+        },
+        {
+          model: Comment,
+          attributes: ['id', 'entity', 'entity_id', 'body'],
         },
       ],
     });
