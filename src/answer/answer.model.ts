@@ -13,7 +13,7 @@ import {
 import { Person } from 'src/auth/person.model';
 import { Question } from 'src/question/question.model';
 import { Comment } from 'src/comment/comment.model';
-
+import { AnswerMeta } from './answer-meta.model';
 interface AnswerAttributes {
   id: number;
   body: string;
@@ -42,6 +42,25 @@ export class Answer extends Model<
   })
   body: string;
 
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: true,
+  })
+  upvote: number;
+
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: true,
+  })
+  downvote: number;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: 0,
+  })
+  isAccepted: boolean;
+
   @ForeignKey(() => Person)
   @Column
   person_id: number;
@@ -55,4 +74,7 @@ export class Answer extends Model<
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @HasMany(() => AnswerMeta)
+  answerMeta: AnswerMeta;
 }

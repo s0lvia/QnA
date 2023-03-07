@@ -107,4 +107,25 @@ export class AnswerController {
 
     return new SuccessResponseObject('Question retrieved', answer);
   }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/upvote')
+  async handleUpVote(@Param('id') id: string, @Req() req) {
+    await this.answerService.upvoteAnswer(+id, req.user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/downvote')
+  async handleDownVote(@Param('id') id: string, @Req() req) {
+    await this.answerService.downvoteAnswer(+id, req.user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/accept')
+  async handleAcceptAnswer(@Param('id') id: string, @Req() req) {
+    await this.answerService.acceptAnswer(+id, req.user.id);
+  }
 }
