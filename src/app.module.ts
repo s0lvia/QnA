@@ -8,6 +8,7 @@ import { sequelizeConfigOpts } from './config/sequelize.config';
 import { AuthModule } from './auth/auth.module';
 import { QuestionModule } from './question/question.module';
 import { AnswerModule } from './answer/answer.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AnswerModule } from './answer/answer.module';
     AuthModule,
     QuestionModule,
     AnswerModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
