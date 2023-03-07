@@ -2,7 +2,6 @@ import { Optional } from 'sequelize';
 import {
   AutoIncrement,
   BelongsTo,
-  HasMany,
   Column,
   DataType,
   ForeignKey,
@@ -12,24 +11,25 @@ import {
 } from 'sequelize-typescript';
 import { Person } from 'src/auth/person.model';
 import { Question } from 'src/question/question.model';
-import { Comment } from 'src/comment/comment.model';
+import { Answer } from 'src/answer/answer.model';
 
-interface AnswerAttributes {
+interface CommentAttributes {
   id: number;
+  entity_id: number;
+  entity: string;
   body: string;
   person_id: number;
-  question_id: number;
 }
 
 @Table({
-  tableName: 'answer',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-  deletedAt: 'deleted_at',
+  tableName: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
 })
-export class Answer extends Model<
-  AnswerAttributes,
-  Optional<AnswerAttributes, 'id'>
+export class Comment extends Model<
+  CommentAttributes,
+  Optional<CommentAttributes, 'id'>
 > {
   @AutoIncrement
   @PrimaryKey
@@ -43,23 +43,17 @@ export class Answer extends Model<
   body: string;
 
   @Column({
-    type: DataType.NUMBER,
-    allowNull: true,
-  })
-  upvote: number;
-
-  @Column({
-    type: DataType.NUMBER,
-    allowNull: true,
-  })
-  downvote: number;
-
-  @Column({
-    type: DataType.BOOLEAN,
+    type: DataType.ENUM('none', 'answer', 'question'),
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: 'none',
   })
-  isAccepted: boolean;
+  entity: string;
+
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: false,
+  })
+  entity_id: number;
 
   @ForeignKey(() => Person)
   @Column
@@ -69,9 +63,16 @@ export class Answer extends Model<
   @Column
   question_id: number;
 
+  @ForeignKey(() => Answer)
+  @Column
+  answer_id: number;
+
   @BelongsTo(() => Person)
   author: Person;
 
-  @HasMany(() => Comment)
-  comments: Comment[];
+  @BelongsTo(() => Question)
+  question: Question;
+
+  @BelongsTo(() => Answer)
+  answer: Answer;
 }

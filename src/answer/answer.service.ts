@@ -3,12 +3,12 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Answer } from './answer.model';
 import { CreateAnswerDto } from './answer.dto';
 import { Person } from 'src/auth/person.model';
-import { Question } from 'src/question/question.model';
+import { Comment } from 'src/comment/comment.model';
+
 @Injectable()
 export class AnswerService {
   constructor(
     @InjectModel(Answer) private readonly answerModel: typeof Answer,
-    @InjectModel(Question) private readonly questionModel: typeof Question,
   ) {}
 
   fetchAnswerAndAuthor(answerId: number) {
@@ -18,6 +18,10 @@ export class AnswerService {
         {
           model: Person,
           attributes: ['id', 'first_name', 'last_name'],
+        },
+        {
+          model: Comment,
+          attributes: ['id', 'entity', 'entity_id', 'body'],
         },
       ],
     });
