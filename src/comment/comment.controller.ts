@@ -20,16 +20,10 @@ import {
 import { AuthGuard } from 'src/auth/auth.guard';
 import { JoiSchema } from 'src/common/joi.pipe';
 import { CommentService } from './comment.service';
-import { QuestionService } from 'src/question/question.service';
-import { AnswerService } from 'src/answer/answer.service';
 
 @Controller('comments')
 export class CommentController {
-  constructor(
-    private readonly commentService: CommentService,
-    private readonly questionService: QuestionService,
-    private readonly answerService: AnswerService,
-  ) {}
+  constructor(private readonly commentService: CommentService) {}
 
   @UseGuards(AuthGuard)
   @Post('/')
