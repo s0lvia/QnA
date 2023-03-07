@@ -121,4 +121,11 @@ export class AnswerController {
   async handleDownVote(@Param('id') id: string, @Req() req) {
     await this.answerService.downvoteAnswer(+id, req.user.id);
   }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/accept')
+  async handleAcceptAnswer(@Param('id') id: string, @Req() req) {
+    await this.answerService.acceptAnswer(+id, req.user.id);
+  }
 }

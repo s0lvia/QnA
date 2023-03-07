@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Answer } from './answer.model';
 import { CreateAnswerDto } from './answer.dto';
 import { Person } from 'src/auth/person.model';
 import { Comment } from 'src/comment/comment.model';
 import { AnswerMeta } from './answer-meta.model';
+import { Question } from 'src/question/question.model';
 
 @Injectable()
 export class AnswerService {
@@ -12,6 +17,8 @@ export class AnswerService {
     @InjectModel(Answer) private readonly answerModel: typeof Answer,
     @InjectModel(AnswerMeta)
     private readonly answerMetaModel: typeof AnswerMeta,
+    @InjectModel(AnswerMeta)
+    private readonly questionModel: typeof Question,
   ) {}
 
   fetchAnswerAndAuthor(answerId: number) {
@@ -139,6 +146,26 @@ export class AnswerService {
     });
 
     answer.downvote += 1;
+    answer.save();
+  }
+
+  async acceptAnswer(id: number, personId: number) {
+    const answer = await this.answerModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+    const author = await this.questionModel.findOne({
+      where: {
+        person_id: personId,
+      },
+    });
+
+    if (!author) {
+      throw new UnauthorizedException('You are not authorized to do this.');
+    }
+
+    answer.isAccepted = true;
     answer.save();
   }
 }
