@@ -11,6 +11,7 @@ import {
 import { Answer } from 'src/answer/answer.model';
 import { Question } from 'src/question/question.model';
 import { Comment } from 'src/comment/comment.model';
+import { AnswerMeta } from 'src/answer/answer-meta.model';
 
 interface PersonAttributes {
   id: number;
@@ -67,4 +68,7 @@ export class Person extends Model<
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @HasMany(() => AnswerMeta)
+  answerMeta: AnswerMeta[];
 }

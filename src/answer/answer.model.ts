@@ -13,7 +13,7 @@ import {
 import { Person } from 'src/auth/person.model';
 import { Question } from 'src/question/question.model';
 import { Comment } from 'src/comment/comment.model';
-
+import { AnswerMeta } from './answer-meta.model';
 interface AnswerAttributes {
   id: number;
   body: string;
@@ -74,4 +74,7 @@ export class Answer extends Model<
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @HasMany(() => AnswerMeta)
+  answerMeta: AnswerMeta[];
 }
