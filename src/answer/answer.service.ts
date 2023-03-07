@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Answer } from './answer.model';
 import { CreateAnswerDto } from './answer.dto';
@@ -73,5 +73,35 @@ export class AnswerService {
     });
 
     return answers;
+  }
+
+  async upvoteAnswer(id: number) {
+    const answer = await this.answerModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!answer) {
+      throw new NotFoundException('Answer does not exist');
+    }
+
+    answer.upvote += 1;
+    answer.save();
+  }
+
+  async downvoteAnswer(id: number) {
+    const answer = await this.answerModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!answer) {
+      throw new NotFoundException('Answer does not exist');
+    }
+
+    answer.downvote -= 1;
+    answer.save();
   }
 }

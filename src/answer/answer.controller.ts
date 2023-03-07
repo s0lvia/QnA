@@ -107,4 +107,28 @@ export class AnswerController {
 
     return new SuccessResponseObject('Question retrieved', answer);
   }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/upvote')
+  async handleUpVote(@Param('id') id: string, @Req() req) {
+    const answer = await this.answerService.fetchAnswerAndAuthor(+id);
+
+    if (!answer) {
+      throw new NotFoundException('Answer does not exist');
+    }
+    await this.answerService.upvoteAnswer(+id);
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/:id/upvote')
+  async handleDownVote(@Param('id') id: string, @Req() req) {
+    const answer = await this.answerService.fetchAnswerAndAuthor(+id);
+
+    if (!answer) {
+      throw new NotFoundException('Answer does not exist');
+    }
+    await this.answerService.upvoteAnswer(+id);
+  }
 }
