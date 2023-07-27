@@ -50,7 +50,7 @@ export class Comment extends Model<
   entity: string;
 
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   entity_id: number;
